@@ -40,12 +40,10 @@
 
             <div>
                 <select class="wrap-input100 comboBox" id="comboID">
-                    <option value="0">Select Algorithm:</option>
                     <option value="1">Caesar</option>
-                    <option value="2">DES</option>
-                    <option value="3">RSA</option>
-                    <option value="4">Vigenere</option>
-                    <option value="5">Pigpen</option>
+                    <option value="2">AES</option>
+                    <option value="3">DES</option>
+                    <option value="4">Polybios</option>
 
                 </select>
             </div>
@@ -84,26 +82,14 @@
 
     var msginput = document.getElementById("msginput");
     var msgarea = document.getElementById("msg-area");
+    var selectedAlgo = document.getElementById("comboID");
 
 
-    function CaesarEncryption (plainString, shiftAmount) {
-        var cipheredtext = "";
-        for(var i = 0; i < plainString.length; i++) {
-            var plainCharacter = plainString.charCodeAt(i);
-            if(plainCharacter >= 97 && plainCharacter <= 122) {
-                cipheredtext += String.fromCharCode((plainCharacter-97 + shiftAmount)%26 + 97 );
-            } else if(plainCharacter >= 65 && plainCharacter <= 90) {
-                cipheredtext += String.fromCharCode((plainCharacter-65 + shiftAmount)%26 + 65 );
-            } else {
-                cipheredtext += String.fromCharCode(plainCharacter);
-            }
-        }
-        return cipheredtext;
-    }
+
     function chooseusername() {
         var user = document.getElementById("cusername").value;
         var selectedAlg = document.getElementById("comboID").value;
-        document.cookie="messengerUname=" + user
+        document.cookie="messengerUname=" + user;
         checkcookie()
     }
 
@@ -118,7 +104,7 @@
     }
 
     function checkcookie() {
-        if (document.cookie.indexOf("messengerUname") == -1) {
+        if (document.cookie.indexOf("messengerUname") === -1) {
             showlogin();
         } else {
             hideLogin();
@@ -149,6 +135,10 @@
         var xmlhttp=new XMLHttpRequest();
         var username = getcookie("messengerUname");
         var output = "";
+
+        var algorithm = selectedAlgo.options[selectedAlgo.selectedIndex].value;
+
+
         xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = xmlhttp.responseText.split("\n")
@@ -170,14 +160,15 @@
 
             }
         }
-        xmlhttp.open("GET","get-messages.php?username=" + username,true);
+        xmlhttp.open("GET","get-messages.php?username=" + username + "&algorithm=" + algorithm,true);
         xmlhttp.send();
     }
 
     function sendmsg() {
 
         var message = msginput.value;
-        var algo = comboID.value;
+        var algorithm = selectedAlgo.options[selectedAlgo.selectedIndex].value;
+        alert(algorithm + "  " + typeof algorithm);
 
         if (message != "") {
             // alert(msgarea.innerHTML)
@@ -194,7 +185,7 @@
                     msginput.value = "";
                 }
             }
-            xmlhttp.open("GET","update-messages.php?username=" + username + "&message=" + message + "&algorithm" + algo,true);
+            xmlhttp.open("GET","update-messages.php?username=" + username + "&message=" + message + "&algorithm=" + algorithm,true);
             xmlhttp.send();
         }
         msgarea.scrollTop = msgarea.scrollHeight;

@@ -7,36 +7,39 @@ if ($db->connect_error) {
 
 $username = stripslashes(htmlspecialchars($_GET['username']));
 $message = stripslashes(htmlspecialchars($_GET['message']));
-$algo = stripslashes(htmlspecialchars($_GET['algo']));
+$algorithm = stripslashes(htmlspecialchars($_GET['algorithm']));
 
-if ($message == "" || $username == "" || $algo == "") {
+
+if ($message == "" || $username == "") {
     die();
 }
 
-if ($algo == "1"){
-    $message = encrypt($message, 3);
+if ($algorithm == "1"){
+    $message = caesarEn($message, 3);
+    $result = $db->prepare("INSERT INTO caesar VALUES('',?,?)");
 }
-elseif ($algo == "2") {
-    // code...
+elseif ($algorithm == "2") {
+    $message = aesEn($message);
+    $result = $db->prepare("INSERT INTO aes VALUES('',?,?)");
 }
-elseif ($algo == "3") {
-    // code...
+elseif ($algorithm == "3") {
+    $message = aesEn($message);
+    $result = $db->prepare("INSERT INTO des VALUES('',?,?)");
 }
-elseif ($algo == "4") {
-    // code...
-}
-elseif ($algo == "5") {
-    // code...
+elseif ($algorithm == "4") {
+    $message = polybiosEn($message);
+    $result = $db->prepare("INSERT INTO polybios VALUES('',?,?)");
 }
 
 
 
 
-$result = $db->prepare("INSERT INTO messages VALUES('',?,?)");
+
+
 $result->bind_param("ss", $username, $message);
 $result->execute();
 
-function encrypt($str, $offset) {
+function caesarEn($str, $offset) {
     $encrypted_text = "";
     $offset = $offset % 26;
     if($offset < 0) {
@@ -57,4 +60,31 @@ function encrypt($str, $offset) {
         $i++;
     }
     return $encrypted_text;
+}
+
+function aesEn($plaintext){
+
+
+    $key = "keybuguclubir32bitaesanahtariKey";
+
+    $ivlen = openssl_cipher_iv_length($cipher="aes-192-cfb");
+//Generate Random IV
+    $iv = openssl_random_pseudo_bytes($ivlen);
+    $ciphertext_raw = openssl_encrypt($plaintext, $cipher, $key, $options=OPENSSL_RAW_DATA, $iv);
+
+    $ciphertext = base64_encode( $iv.$ciphertext_raw );
+    return $ciphertext;
+}
+
+function desEn($str)
+{
+
+}
+
+function polybiosEn($str){
+    $alphabet = array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','ä','ö','ü','ß');
+    $polybios  = array('11','12','13','14','15','21','22','23','24','25','31','32','33','34','35','41','42','43','44','45','51','52','53','00','54','55','61','63','62','64');
+    $output  = str_ireplace($alphabet, $polybios, $str);
+
+    return($output);
 }
