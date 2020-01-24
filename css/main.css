@@ -1,49 +1,49 @@
 
 a {
-	font-family: Righteous;
-	font-size: 14px;
-	line-height: 1.7;
-	color: #666666;
-	margin: 0px;
-	transition: all 0.4s;
-	-webkit-transition: all 0.4s;
+  font-family: Righteous;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
+  transition: all 0.4s;
+  -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;
 }
 
 a:focus {
-	outline: none !important;
+  outline: none !important;
 }
 
 
 a:hover {
-	text-decoration: none;
+  text-decoration: none;
   color: #fff;
 }
 
 /*---------------------------------------------*/
 h1,h2,h3,h4,h5,h6 {
-	margin: 0px;
+  margin: 0px;
 }
 
 p {
-	font-family: Righteous;
-	font-size: 14px;
-	line-height: 1.7;
-	color: #666666;
-	margin: 0px;
+  font-family: Righteous;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
 }
 
 ul, li {
-	margin: 0px;
-	list-style-type: none;
+  margin: 0px;
+  list-style-type: none;
 }
 
 
 /*---------------------------------------------*/
 input {
-	outline: none;
-	border: none;
+  outline: none;
+  border: none;
 }
 
 textarea {
@@ -82,17 +82,17 @@ label {
 
 /*---------------------------------------------*/
 button {
-	outline: none !important;
-	border: none;
-	background: transparent;
+  outline: none !important;
+  border: none;
+  background: transparent;
 }
 
 button:hover {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 iframe {
-	border: none !important;
+  border: none !important;
 }
 
 
@@ -215,6 +215,10 @@ iframe {
   height: 45px;
   background: transparent;
   padding: 0 5px 0 38px;
+}
+
+.comboBox{
+  text-align: center;
 }
 
 /*---------------------------------------------*/
@@ -442,4 +446,9 @@ iframe {
     visibility: visible;
     opacity: 1;
   }
+}
+
+.comboBox{
+  font-family: Righteous;
+  font-size: 15px;
 }

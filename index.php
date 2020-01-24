@@ -1,9 +1,9 @@
 <html>
 <head>
-	<title>CrypChat | R-Kamos</title>
-	<link rel="stylesheet" href="css/style.css" type="text/css">
-	<link rel="stylesheet" href="css/main.css" type="text/css">
-	<link rel="stylesheet" href="css/util.css" type="text/css">
+    <title>CrypChat | R-Kamos</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+    <link rel="stylesheet" href="css/util.css" type="text/css">
     <link rel="icon" type="image/png" href="images/favicon.ico"/>
 
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
@@ -13,61 +13,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body onload="checkcookie(); update();" style="background-image: url('images/bg-01.jpg');">
+<body onload="showlogin(); update();" style="background-image: url('images/bg-01.jpg');">
 
 
-    <div id="whitebg"></div>
-    <div id="loginbox">
-            <div class="limiter">
-                <div class="wrap-login100">
+<div id="whitebg"></div>
+<div id="loginbox">
+    <div class="limiter">
+        <div class="wrap-login100">
                     <span class="login100-form-logo">
                         <img style="width:90%" src="images\wp_pp_logo.png" alt="">
                     </span>
-                    <span class="login100-form-title p-b-34 p-t-27">
+            <span class="login100-form-title p-b-34 p-t-27">
                         CrypChat
                     </span>
 
-                    <div class="wrap-input100 validate-input" data-validate = "Kullanıcı adınızı girin">
-                        <input class="input100" id="cusername" type="text" name="username" placeholder="Kullanıcı Adı">
-                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
-                    </div>
-                    <!--
-                    <div class="wrap-input100 validate-input" data-validate="Şifrenizi girin">
-                        <input class="input100" id="password" type="password" name="pass" placeholder="Şifre">
-                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
-                    </div>
-                    -->
-                    <div class="container-login100-form-btn">
-
-                        <button type="submit" class="login100-form-btn" onclick="chooseusername()">
-                            Giriş
-                        </button>
-
-                    </div>
-
-                </div>
+            <div class="wrap-input100 validate-input" data-validate = "Kullanıcı adınızı girin">
+                <input class="input100" id="cusername" type="text" name="username" placeholder="Kullanıcı Adı">
+                <span class="focus-input100" data-placeholder="&#xf207;"></span>
             </div>
+            <!--
+            <div class="wrap-input100 validate-input" data-validate="Şifrenizi girin">
+                <input class="input100" id="password" type="password" name="pass" placeholder="Şifre">
+                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+            </div>
+            -->
+
+            <div>
+                <select class="wrap-input100 comboBox" id="comboID">
+                    <option value="0">Select Algorithm:</option>
+                    <option value="1">Caesar</option>
+                    <option value="2">DES</option>
+                    <option value="3">RSA</option>
+                    <option value="4">Vigenere</option>
+                    <option value="5">Pigpen</option>
+
+                </select>
+            </div>
+
+            <div class="container-login100-form-btn">
+
+                <button class="login100-form-btn" onclick="chooseusername()">
+                    Giriş
+                </button>
+
+            </div>
+
+        </div>
     </div>
-    <div class="header">
+</div>
+<div class="header">
         <span>
             <img src="images/logo2.png" style="height: 50px; float: left; margin-left: 75px">
         </span>
-        <span>
+    <span>
             <p class="headerP">CryptChat</p>
         </span>
+</div>
+<div class="msg-container">
+    <div class="msg-area" id="msg-area" style="width: 80%; margin: auto; "></div>
+    <div class="bottom">
+        <input type="text" name="msginput" class="msginput" id="msginput" onkeydown="if (event.keyCode === 13) sendmsg()" value="" placeholder="Mesajınızı buraya girin...">
     </div>
-    <div class="msg-container">
-        <div class="msg-area" id="msg-area" style="width: 80%; margin: auto; "></div>
-        <div class="bottom">
-            <input type="text" name="msginput" class="msginput" id="msginput" onkeydown="if (event.keyCode === 13) sendmsg()" value="" placeholder="Mesajınızı buraya girin...">
-        </div>
-    </div>
-    </div>
+</div>
+</div>
 
 
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     var msginput = document.getElementById("msginput");
     var msgarea = document.getElementById("msg-area");
@@ -89,6 +102,7 @@
     }
     function chooseusername() {
         var user = document.getElementById("cusername").value;
+        var selectedAlg = document.getElementById("comboID").value;
         document.cookie="messengerUname=" + user
         checkcookie()
     }
@@ -123,50 +137,48 @@
     }
 
     function escapehtml(text) {
-      return text
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
     function update() {
         var xmlhttp=new XMLHttpRequest();
         var username = getcookie("messengerUname");
         var output = "";
-            xmlhttp.onreadystatechange=function() {
-                if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-                    var response = xmlhttp.responseText.split("\n")
-                    var rl = response.length
-                    var item = "";
-                    for (var i = 0; i < rl; i++) {
-                        item = response[i].split("\\")
-                        if (item[1] != undefined) {
-                            if (item[0] == username) {
-                                output += "<div class=\"msgc\" style=\"margin-bottom: 30px;\"> <div class=\"msg msgfrom\">" + item[1] + "</div> <div class=\"msgarr msgarrfrom\"></div> <div class=\"msgsentby msgsentbyfrom\">" + item[0] + " - Tarafından gönderildi</div> </div>";
-                            } else {
-                                output += "<div class=\"msgc\"> <div class=\"msg\">" + item[1] + "</div> <div class=\"msgarr\"></div> <div class=\"msgsentby\">" + item[0] + " - Tarafından gönderildi</div> </div>";
-                            }
+        xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                var response = xmlhttp.responseText.split("\n")
+                var rl = response.length
+                var item = "";
+                for (var i = 0; i < rl; i++) {
+                    item = response[i].split("\\")
+                    if (item[1] != undefined) {
+                        if (item[0] == username) {
+                            output += "<div class=\"msgc\" style=\"margin-bottom: 30px;\"> <div class=\"msg msgfrom\">" + item[1] + "</div> <div class=\"msgarr msgarrfrom\"></div> <div class=\"msgsentby msgsentbyfrom\">" + item[0] + " - Tarafından gönderildi</div> </div>";
+                        } else {
+                            output += "<div class=\"msgc\"> <div class=\"msg\">" + item[1] + "</div> <div class=\"msgarr\"></div> <div class=\"msgsentby\">" + item[0] + " - Tarafından gönderildi</div> </div>";
                         }
                     }
-
-                    msgarea.innerHTML = output;
-                    msgarea.scrollTop = msgarea.scrollHeight;
-
                 }
+
+                msgarea.innerHTML = output;
+                msgarea.scrollTop = msgarea.scrollHeight;
+
             }
-              xmlhttp.open("GET","get-messages.php?username=" + username,true);
-              xmlhttp.send();
+        }
+        xmlhttp.open("GET","get-messages.php?username=" + username,true);
+        xmlhttp.send();
     }
 
     function sendmsg() {
 
         var message = msginput.value;
+        var algo = comboID.value;
 
-        //message = CaesarEncryption(message,3);
-
-        
         if (message != "") {
             // alert(msgarea.innerHTML)
             // alert(getcookie("messengerUname"))
@@ -182,14 +194,14 @@
                     msginput.value = "";
                 }
             }
-              xmlhttp.open("GET","update-messages.php?username=" + username + "&message=" + message,true);
-              xmlhttp.send();
+            xmlhttp.open("GET","update-messages.php?username=" + username + "&message=" + message + "&algorithm" + algo,true);
+            xmlhttp.send();
         }
         msgarea.scrollTop = msgarea.scrollHeight;
 
     }
 
     setInterval(function(){ update() }, 2500);
-    </script>
+</script>
 </body>
 </html>
